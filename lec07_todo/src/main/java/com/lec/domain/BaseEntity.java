@@ -1,6 +1,5 @@
 package com.lec.domain;
 
-
 import java.time.LocalDateTime;
 
 import org.springframework.data.annotation.CreatedDate;

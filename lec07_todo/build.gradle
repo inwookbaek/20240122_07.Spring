@@ -8,6 +8,7 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.2.5'
 	id 'io.spring.dependency-management' version '1.1.4'
+	// id 'com.ewerk.gradle.plugins.querydsl' version '1.0.10'
 }
 
 group = 'com.lec'
@@ -52,14 +53,22 @@ tasks.named('test') {
 	useJUnitPlatform()
 }
 
+def querydslDir = "$buildDir/generated/querydsl"
+querydsl {
+    //jpa = true
+    //querydslSourcesDir = querydslDir
+}
+
 sourceSets {
     main {
         java {
-            srcDirs = ["$projectDir/src/main/java", "src/main/java/queryDsl"]
+            // srcDirs = ["$projectDir/src/main/java", "$projectDir/build/queryDsl"]
+            srcDirs = ["src/main/java", querydslDir]
         }
     }
 }
 
 clean {
-	delete "src/main/java/queryDsl"
+	// delete "$projectDir/build/queryDsl"
+	delete querydslDir
 }
