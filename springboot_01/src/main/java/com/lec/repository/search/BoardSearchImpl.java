@@ -2,6 +2,7 @@ package com.lec.repository.search;
 
 import java.util.List;
 
+import org.hibernate.query.criteria.JpaSubQuery;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -21,7 +22,7 @@ public class BoardSearchImpl extends QuerydslRepositorySupport implements BoardS
 
         QBoard board = QBoard.board;
 
-        JPQLQuery<Board> query = from(board);
+        JpaQuery<Board> query = from(board);
 
         BooleanBuilder booleanBuilder = new BooleanBuilder(); // (
 

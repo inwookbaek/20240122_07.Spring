@@ -1,0 +1,61 @@
+Spring Boot 3.2.7과 Querydsl 5.0.0 환경에서 Q클래스를 생성하는 방법을 설명해드리겠습니다. 이 과정은 크게 의존성 추가, 플러그인 설정, 그리고 빌드 실행의 세 단계로 나눌 수 있습니다.
+
+1. 의존성 추가
+
+먼저 build.gradle 파일에 다음 의존성들을 추가합니다:
+
+```gradle
+dependencies {
+    implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
+    annotationProcessor 'com.querydsl:querydsl-apt:5.0.0:jakarta'
+    annotationProcessor 'jakarta.persistence:jakarta.persistence-api'
+    annotationProcessor 'jakarta.annotation:jakarta.annotation-api'
+}
+```
+
+2. 플러그인 설정
+
+같은 build.gradle 파일에 다음 플러그인과 설정을 추가합니다:
+
+```gradle
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.2.7'
+    id 'io.spring.dependency-management' version '1.1.4'
+    id 'com.ewerk.gradle.plugins.querydsl' version '1.0.10'
+}
+
+def querydslDir = "$buildDir/generated/querydsl"
+
+querydsl {
+    jpa = true
+    querydslSourcesDir = querydslDir
+}
+
+sourceSets {
+    main.java.srcDir querydslDir
+}
+
+compileQuerydsl{
+    options.annotationProcessorPath = configurations.querydsl
+}
+
+configurations {
+    querydsl.extendsFrom compileClasspath
+}
+```
+
+3. 빌드 실행
+
+위의 설정을 마친 후, 다음 명령어를 실행하여 Q클래스를 생성합니다:
+
+```
+./gradlew compileQuerydsl
+```
+
+이 명령어를 실행하면 `build/generated/querydsl` 디렉토리에 Q클래스들이 생성됩니다.
+
+주의사항:
+- 엔티티 클래스에 `@Entity` 어노테이션이 있는지 확인하세요.
+- 생성된 Q클래스들은 자동으로 소스 세트에 추가되므로, 별도로 추가할 필요가 없습니다.
+- 엔티티를 수정할 때마다 `compileQuerydsl` 태스크를 실행하여 Q클래스를 다시 생성해야 합니다.
