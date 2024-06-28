@@ -2,14 +2,15 @@ package com.lec.repository.search;
 
 import java.util.List;
 
-import org.hibernate.query.criteria.JpaSubQuery;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 
-import com.fasterxml.jackson.databind.util.ArrayBuilders.BooleanBuilder;
 import com.lec.domain.Board;
+import com.lec.domain.QBoard;
+import com.querydsl.core.BooleanBuilder;
+import com.querydsl.jpa.JPQLQuery;
 
 public class BoardSearchImpl extends QuerydslRepositorySupport implements BoardSearch {
 
@@ -22,7 +23,7 @@ public class BoardSearchImpl extends QuerydslRepositorySupport implements BoardS
 
         QBoard board = QBoard.board;
 
-        JpaQuery<Board> query = from(board);
+        JPQLQuery<Board> query = from(board);
 
         BooleanBuilder booleanBuilder = new BooleanBuilder(); // (
 
